@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phishing Awareness Analysis · DecodeLabs Project 3</title>
+<meta name="description" content="Rule-based phishing indicator analyzer — DecodeLabs Cyber Security Internship Project 3. Identifies suspicious links, keywords, and red flags in sample messages.">
+<meta property="og:title" content="Phishing Awareness Analysis — DecodeLabs Project 3">
+<meta property="og:description" content="Analyze sample emails for phishing indicators with transparent rule-based detection.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#2b2416">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 15 C30 15 15 30 15 50 C15 70 30 85 50 85 C70 85 85 70 85 50 C85 30 70 15 50 15' fill='none' stroke='%23a4291f' stroke-width='5'/><path d='M40 40 L50 55 L60 40' fill='none' stroke='%23a4291f' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/><line x1='50' y1='62' x2='50' y2='68' stroke='%23a4291f' stroke-width='5' stroke-linecap='round'/></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="wrap">
+  <section class="folder">
+    <div class="tab">CASE FILE · MSG-ANALYSIS</div>
+    <div class="folder-body">
+      <header>
+        <div class="soc-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="40" height="40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="24" r="20" fill="rgba(164,41,31,0.08)" stroke="#a4291f" stroke-width="1.5"/>
+            <path d="M20 20L24 30L28 20" fill="none" stroke="#a4291f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="24" y1="34" x2="24" y2="37" stroke="#a4291f" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <p class="eyebrow">RULE-BASED PHISHING AWARENESS ANALYZER — NOT AN AI DETECTOR</p>
+        <h1>Phishing Awareness Analysis</h1>
+        <p class="sub">Paste a sample email or message below. It's checked against a fixed set of known phishing indicators — DecodeLabs Cyber Security Internship, Project 3.</p>
+      </header>
+
+      <label for="message">MESSAGE UNDER REVIEW</label>
+      <textarea id="message" rows="9" placeholder="Paste a sample email or message here…"></textarea>
+
+      <div class="sample-bar">
+        <span class="sample-label">Load sample:</span>
+        <button class="sample-btn" data-sample="phishing1">Urgent Account Warning</button>
+        <button class="sample-btn" data-sample="phishing2">Financial/Billing Scam</button>
+        <button class="sample-btn" data-sample="legitimate">Legitimate Message</button>
+      </div>
+
+      <div class="actions">
+        <button id="analyzeBtn" class="primary">Analyze Message</button>
+        <button id="clearBtn" class="ghost">Clear</button>
+      </div>
+
+      <section class="result" id="resultSection">
+        <div class="risk-row">
+          <span>RISK LEVEL</span>
+          <span id="riskBadge" class="stamp">NOT ANALYZED</span>
+        </div>
+
+        <h2>Red Flags Detected</h2>
+        <ul id="flagList" class="flags"><li class="empty">No message analyzed yet.</li></ul>
+
+        <h2>Why This Might Be Unsafe</h2>
+        <div id="explanationList" class="explanation-list">
+          <p class="empty-explanation">Paste a message above and click Analyze.</p>
+        </div>
+
+        <div id="urlInspection" class="url-inspection" style="display:none;">
+          <h2>URLs Detected</h2>
+          <ul id="urlList" class="url-list"></ul>
+        </div>
+
+        <div id="recommendationsSection" class="recommendations" style="display:none;">
+          <h2>Recommended Actions</h2>
+          <ul id="recList" class="rec-list"></ul>
+        </div>
+      </section>
+    </div>
+  </section>
+  <footer>Keyword/pattern matching only — a clean result is not proof a message is safe. · Tahniat Farhan</footer>
+</main>
+<script src="script.js"></script>
+</body>
+</html>

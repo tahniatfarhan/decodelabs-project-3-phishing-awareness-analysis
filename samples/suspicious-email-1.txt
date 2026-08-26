@@ -1,0 +1,11 @@
+Subject: URGENT: Your Account Will Be Suspended
+
+URGENT: Your account will be suspended within 24 hours.
+
+Verify your account immediately by signing in with your password.
+Failure to act now will result in permanent account closure.
+
+Click the link below to verify:
+https://example.com/account-verify
+
+— Account Security Team

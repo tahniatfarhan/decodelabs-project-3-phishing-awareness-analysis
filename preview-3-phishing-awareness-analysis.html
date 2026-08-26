@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phishing Awareness Analysis · DecodeLabs Project 3</title>
+<style>
+/* ============================================================
+   Phishing Awareness Analysis — "Case File" identity
+   Manila-folder paper tone, a folder tab, and a rotated rubber-
+   stamp badge for risk level. Deliberately not the generic
+   cream+terracotta+serif combo — ink is brown-black, accent is
+   a brick-red stamp, type is monospace throughout (evidence log,
+   not a marketing page).
+   ============================================================ */
+
+:root{
+  --bg:#d9cfb0;
+  --paper:#f2ecd9;
+  --tab:#e4d7ad;
+  --ink:#2b2416;
+  --muted:#6b5f45;
+  --line:#cabf9a;
+  --stamp:#a4291f;
+  --stamp-bg:#f6e6e0;
+  --high:#a4291f;
+  --medium:#a8720f;
+  --low:#3a6b3a;
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+
+body{
+  background:
+    radial-gradient(ellipse at top, rgba(255,255,255,.15), transparent 60%),
+    var(--bg);
+  font-family: ui-monospace, "SF Mono", Consolas, monospace;
+  color:var(--ink);
+  min-height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  padding:32px 14px;
+}
+
+.wrap{width:100%; max-width:600px;}
+
+.folder{position:relative;}
+
+.tab{
+  display:inline-block;
+  background:var(--tab);
+  border:1px solid var(--line); border-bottom:none;
+  padding:8px 18px 22px;
+  font-size:10.5px; letter-spacing:.1em; color:var(--muted);
+  border-radius:8px 8px 0 0;
+  margin-left:24px;
+  position:relative; top:1px;
+}
+
+.folder-body{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:0 10px 10px 10px;
+  padding:30px 26px;
+  box-shadow:0 24px 60px rgba(0,0,0,.22);
+}
+
+header{margin-bottom:22px;}
+.eyebrow{font-size:10px; letter-spacing:.08em; color:var(--stamp); margin-bottom:10px;}
+h1{font-family: Georgia, serif; font-size:22px; margin-bottom:9px; color:var(--ink);}
+.sub{font-size:12.5px; color:var(--muted); line-height:1.6;}
+
+label{display:block; font-size:10.5px; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+
+textarea{
+  width:100%; border:1px solid var(--line); border-radius:4px; padding:14px;
+  font-family:inherit; font-size:13.5px; resize:vertical; outline:none;
+  background:#fbf8ef; color:var(--ink); line-height:1.6;
+}
+textarea:focus{border-color:var(--stamp);}
+
+.actions{display:flex; gap:10px; margin:16px 0 26px;}
+.actions button{padding:12px 18px; border-radius:4px; border:1px solid var(--line); font-weight:700; cursor:pointer; font-family:inherit; font-size:13px; letter-spacing:.02em;}
+.primary{background:var(--ink); color:var(--paper); border-color:var(--ink); flex:1;}
+.primary:hover{opacity:.88;}
+.ghost{background:transparent; color:var(--muted);}
+.ghost:hover{border-color:var(--muted); color:var(--ink);}
+
+.result{border-top:1px dashed var(--line); padding-top:20px;}
+.risk-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;}
+.risk-row > span:first-child{font-size:11px; color:var(--muted); letter-spacing:.06em;}
+
+.stamp{
+  display:inline-block;
+  padding:6px 16px;
+  border:2px solid var(--muted); border-radius:3px;
+  font-size:11.5px; font-weight:700; letter-spacing:.06em;
+  color:var(--muted);
+  transform:rotate(-2deg);
+}
+.stamp.high{border-color:var(--high); color:var(--high); background:var(--stamp-bg);}
+.stamp.medium{border-color:var(--medium); color:var(--medium); background:#f7efdd;}
+.stamp.low{border-color:var(--low); color:var(--low); background:#e9f2e6;}
+
+h2{font-family: Georgia, serif; font-size:13.5px; margin:18px 0 9px; color:var(--ink);}
+.flags{list-style:none; display:grid; gap:8px; margin-bottom:6px;}
+.flags li{
+  font-size:12.5px; padding:9px 12px; background:#ece3cc; border-left:3px solid var(--medium); border-radius:2px;
+}
+.flags li.empty{border-left-color:var(--line); color:var(--muted); background:transparent;}
+#explanation{font-size:12.5px; color:var(--muted); line-height:1.7;}
+
+footer{text-align:center; margin-top:16px; font-size:10.5px; color:#7a6e50;}
+
+button:focus-visible, textarea:focus-visible{outline:2px solid var(--stamp); outline-offset:2px;}
+
+@media (max-width:480px){
+  .folder-body{padding:24px 18px;}
+  .actions{flex-direction:column;}
+  .risk-row{flex-direction:column; align-items:flex-start; gap:10px;}
+}
+
+</style>
+</head>
+<body>
+<main class="wrap">
+  <section class="folder">
+    <div class="tab">CASE FILE · MSG-ANALYSIS</div>
+    <div class="folder-body">
+      <header>
+        <p class="eyebrow">RULE-BASED PHISHING AWARENESS ANALYZER — NOT AN AI DETECTOR</p>
+        <h1>Phishing Awareness Analysis</h1>
+        <p class="sub">Paste a sample email or message below. It's checked against a fixed set of known phishing indicators — DecodeLabs Cyber Security Internship, Project 3.</p>
+      </header>
+
+      <label for="message">MESSAGE UNDER REVIEW</label>
+      <textarea id="message" rows="9" placeholder="Paste a sample email or message here…"></textarea>
+
+      <div class="actions">
+        <button id="analyzeBtn" class="primary">Analyze Message</button>
+        <button id="clearBtn" class="ghost">Clear</button>
+      </div>
+
+      <section class="result">
+        <div class="risk-row">
+          <span>RISK LEVEL</span>
+          <span id="riskBadge" class="stamp">NOT ANALYZED</span>
+        </div>
+
+        <h2>Red Flags Detected</h2>
+        <ul id="flagList" class="flags"><li class="empty">No message analyzed yet.</li></ul>
+
+        <h2>Why This Might Be Unsafe</h2>
+        <p id="explanation">Paste a message above and click Analyze.</p>
+      </section>
+    </div>
+  </section>
+  <footer>Keyword/pattern matching only — a clean result is not proof a message is safe. · Tahniat Farhan</footer>
+</main>
+<script>
+/* ============================================================
+   Phishing Awareness Analysis — rule-based indicator matching
+   DecodeLabs Cyber Security Internship — Project 3
+
+   This is intentionally NOT machine learning or AI classification.
+   It is a fixed, transparent keyword/pattern rule set — exactly
+   what the brief asks the checker to demonstrate: identifying
+   suspicious links/keywords and listing red flags with reasons.
+   ============================================================ */
+
+const messageInput = document.getElementById('message');
+const analyzeBtn = document.getElementById('analyzeBtn');
+const clearBtn = document.getElementById('clearBtn');
+const riskBadge = document.getElementById('riskBadge');
+const flagList = document.getElementById('flagList');
+const explanation = document.getElementById('explanation');
+
+const INDICATORS = [
+  {
+    name: 'Urgent / time-pressure language',
+    patterns: ['urgent', 'immediately', 'act now', 'within 24 hours', 'final warning', 'as soon as possible'],
+    why: 'Urgency is used to short-circuit careful judgment before a message can be verified.',
+  },
+  {
+    name: 'Credential or login request',
+    patterns: ['password', 'verify your account', 'sign in', 'log in', 'credentials', 'confirm your identity'],
+    why: 'Legitimate services essentially never ask you to "confirm" a password by clicking an emailed link.',
+  },
+  {
+    name: 'Financial request',
+    patterns: ['payment', 'bank account', 'credit card', 'wire transfer', 'invoice attached', 'gift card'],
+    why: 'Unexpected financial requests should always be verified through a separate, already-known channel.',
+  },
+  {
+    name: 'Account-threat language',
+    patterns: ['account suspended', 'be suspended', 'account locked', 'account closure', 'account will be closed', 'unusual activity', 'security alert'],
+    why: 'Threatening account loss is a common pressure tactic used to provoke a fast, unverified click.',
+  },
+];
+
+function analyzeMessage(raw) {
+  const text = raw.trim().toLowerCase();
+
+  if (!text) {
+    return { level: 'none', label: 'NOT ANALYZED', flags: [], explanationText: 'Paste a message above and click Analyze.' };
+  }
+
+  const found = INDICATORS.filter(indicator => indicator.patterns.some(p => text.includes(p)));
+
+  const hasUrl = /(https?:\/\/[^\s]+)/i.test(raw);
+  if (hasUrl) {
+    found.push({ name: 'Contains a link', why: 'Links in unsolicited messages should be inspected — or better, not clicked — before being trusted.' });
+  }
+
+  let level = 'none';
+  let label = 'NO OBVIOUS INDICATORS';
+  if (found.length >= 4) { level = 'high'; label = 'HIGH RISK'; }
+  else if (found.length >= 2) { level = 'medium'; label = 'MEDIUM RISK'; }
+  else if (found.length === 1) { level = 'low'; label = 'LOW / REVIEW'; }
+
+  const explanationText = found.length
+    ? found.map(f => f.why).join(' ')
+    : "No obvious indicators from this tool's rule set were detected. That does not prove the message is legitimate — always verify through a channel you already trust, not one the message itself provides.";
+
+  return { level, label, flags: found.map(f => f.name), explanationText };
+}
+
+function renderResult({ level, label, flags, explanationText }) {
+  riskBadge.textContent = label;
+  riskBadge.className = 'stamp' + (level !== 'none' ? ' ' + level : '');
+
+  flagList.innerHTML = '';
+  if (flags.length === 0) {
+    flagList.innerHTML = '<li class="empty">No flags matched this tool\u2019s rule set.</li>';
+  } else {
+    flags.forEach(name => {
+      const li = document.createElement('li');
+      li.textContent = name;
+      flagList.appendChild(li);
+    });
+  }
+
+  explanation.textContent = explanationText;
+}
+
+analyzeBtn.addEventListener('click', () => {
+  renderResult(analyzeMessage(messageInput.value));
+});
+
+clearBtn.addEventListener('click', () => {
+  messageInput.value = '';
+  renderResult({ level: 'none', label: 'NOT ANALYZED', flags: [], explanationText: 'Paste a message above and click Analyze.' });
+  messageInput.focus();
+});
+
+</script>
+</body>
+</html>
